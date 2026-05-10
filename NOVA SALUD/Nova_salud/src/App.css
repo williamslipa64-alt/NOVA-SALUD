@@ -1,0 +1,148 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #534AB7;
+  --primary-light: #6E66CC;
+  --bg: #F8F9FC;
+  --card: #FFFFFF;
+  --border: #E2E8F0;
+  --text: #1E2937;
+  --text-light: #64748B;
+  --success: #10B981;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+  background: white;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: white;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo h1 {
+  color: var(--primary);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.logo p {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.nav-menu {
+  flex: 1;
+  padding: 15px 8px;
+}
+
+.nav-item {
+  padding: 14px 20px;
+  margin: 4px 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-item:hover {
+  background: #F1F0FF;
+}
+
+.nav-item.active {
+  background: #F1F0FF;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  z-index: 10;
+}
+
+.search-bar {
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 360px;
+  font-size: 15px;
+}
+
+.page-content {
+  flex: 1;
+  padding: 24px;
+  overflow: auto;
+  background: #FFD3AC;     /* ← Color que pediste */
+  min-height: 100%;
+}
+
+/* User Info */
+.user-info {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  background: #E0E7FF;
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.btn-logout {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: #EF4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.user-info {
+  cursor: pointer;
+}

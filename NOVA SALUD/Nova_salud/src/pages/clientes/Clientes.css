@@ -1,0 +1,75 @@
+.clientes-container {
+  padding: 10px 0;
+}
+
+.clientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-nuevo-cliente {
+  background: #534AB7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.clientes-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.c-metric {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  text-align: center;
+}
+
+.c-metric p {
+  color: #64748B;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.c-metric h3 {
+  font-size: 28px;
+  color: #1E2937;
+}
+
+.card {
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.search-cliente {
+  padding: 8px 14px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  width: 280px;
+}
+
+.empty-clientes {
+  text-align: center;
+  padding: 100px 20px;
+  color: #64748B;
+}

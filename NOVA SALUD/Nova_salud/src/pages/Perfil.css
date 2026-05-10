@@ -1,0 +1,120 @@
+.perfil-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.perfil-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.perfil-imagen-section {
+  text-align: center;
+  min-width: 180px;
+}
+
+.perfil-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #534AB7;
+  margin: 0 auto 20px;
+  background: #F1F0FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perfil-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  font-size: 50px;
+  color: #534AB7;
+  font-weight: bold;
+}
+
+.imagen-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-subir-imagen, .btn-eliminar-imagen {
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+
+.btn-subir-imagen {
+  background: #534AB7;
+  color: white;
+  border: none;
+}
+
+.btn-eliminar-imagen {
+  background: #EF4444;
+  color: white;
+  border: none;
+}
+
+.perfil-form {
+  flex: 1;
+  min-width: 300px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-cancelar {
+  padding: 12px 24px;
+  background: #E2E8F0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-guardar {
+  padding: 12px 28px;
+  background: #10B981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}

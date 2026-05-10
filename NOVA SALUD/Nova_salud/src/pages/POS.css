@@ -1,0 +1,171 @@
+.pos-container {
+  display: flex;
+  gap: 24px;
+  padding: 20px;
+  min-height: calc(100vh - 80px);
+  background: #f5f7fb;
+}
+
+.pos-left {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pos-header {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.pos-header h2 {
+  margin-bottom: 5px;
+}
+
+.pos-header p {
+  color: #64748b;
+}
+
+.buscador-pos input {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  outline: none;
+}
+
+.productos-panel {
+  flex: 1;
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.productos-panel h3 {
+  margin-bottom: 20px;
+}
+
+.empty-state,
+.empty-carrito {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.empty-state h4,
+.empty-carrito h4 {
+  margin-bottom: 8px;
+}
+
+.empty-state p,
+.empty-carrito p {
+  color: #64748b;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.producto-card {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.producto-card button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  background: #534ab7;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pos-right {
+  flex: 1;
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.carrito-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.carrito-header span {
+  background: #eef2ff;
+  color: #534ab7;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.carrito-items {
+  flex: 1;
+}
+
+.total-section {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 20px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.payment-methods button {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #534ab7;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.payment-methods button:hover {
+  background: #534ab7;
+  color: white;
+}
+
+.btn-venta {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  background: #534ab7;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: 0.6;
+}

@@ -1,0 +1,73 @@
+.alertas-container {
+  padding: 10px 0;
+}
+
+.alertas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-config {
+  background: #F1F0FF;
+  color: #534AB7;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.alertas-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.alert-metric {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  text-align: center;
+}
+
+.alert-metric.critical {
+  border-left: 5px solid #EF4444;
+}
+
+.alert-metric.warning {
+  border-left: 5px solid #F59E0B;
+}
+
+.alert-metric p {
+  color: #64748B;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.alert-metric h3 {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.empty-alertas {
+  text-align: center;
+  padding: 70px 20px;
+  color: #64748B;
+}
