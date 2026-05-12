@@ -31,7 +31,13 @@ app.get('/', (req, res) => {
     port: PORT 
   });
 });
+// Crear carpeta uploads si no existe
+const fs = require('fs');
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads');
+}
 
+app.use('/api/productos', require('./routes/productoRoutes'));
 app.listen(PORT, () => {
   console.log(` Servidor corriendo en http://localhost:${PORT}`);
 });

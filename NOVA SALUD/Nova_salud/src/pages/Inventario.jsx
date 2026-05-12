@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Inventario.css';
+
+const API_URL = 'http://localhost:3500/api';
 
 function Inventario({ searchTerm = "" }) {
   const [productos, setProductos] = useState([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [productoAEditar, setProductoAEditar] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [nuevoProducto, setNuevoProducto] = useState({
     nombre: '',
@@ -14,22 +17,107 @@ function Inventario({ searchTerm = "" }) {
     stock_actual: '',
     stock_minimo: '',
     categoria: '',
-    fecha_vencimiento: '',
-    imagen: null
+    fecha_vencimiento: ''
   });
 
   const [imagenPreview, setImagenPreview] = useState(null);
+  const [imagenFile, setImagenFile] = useState(null);
 
-  const productosFiltrados = productos.filter(producto =>
-    producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (producto.codigo_barra && producto.codigo_barra.includes(searchTerm))
+  const token = localStorage.getItem('token');
+
+  // Cargar productos
+  const cargarProductos = async () => {
+    try {
+      const res = await fetch(`${API_URL}/productos`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setProductos(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error cargando productos:", err);
+    }
+  };
+
+  useEffect(() => {
+    cargarProductos();
+  }, []);
+
+  const productosFiltrados = productos.filter(p =>
+    p.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.codigo_barra?.includes(searchTerm)
   );
 
   const handleImagenChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setNuevoProducto({ ...nuevoProducto, imagen: file });
+      setImagenFile(file);
       setImagenPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const guardarProducto = async () => {
+    if (!nuevoProducto.nombre || !nuevoProducto.precio_venta) {
+      alert("Nombre y Precio de Venta son obligatorios");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('nombre', nuevoProducto.nombre);
+      formData.append('codigo_barra', nuevoProducto.codigo_barra || '');
+      formData.append('precio_compra', nuevoProducto.precio_compra || 0);
+      formData.append('precio_venta', nuevoProducto.precio_venta);
+      formData.append('stock_actual', nuevoProducto.stock_actual || 0);
+      formData.append('stock_minimo', nuevoProducto.stock_minimo || 10);
+      formData.append('categoria', nuevoProducto.categoria || '');
+      formData.append('fecha_vencimiento', nuevoProducto.fecha_vencimiento || '');
+
+      if (imagenFile) formData.append('imagen', imagenFile);
+
+      const url = productoAEditar 
+        ? `${API_URL}/productos/${productoAEditar.id}` 
+        : `${API_URL}/productos`;
+
+      const res = await fetch(url, {
+        method: productoAEditar ? 'PUT' : 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData
+      });
+
+      if (res.ok) {
+        alert(productoAEditar ? "Producto actualizado correctamente" : "Producto guardado correctamente");
+        setMostrarFormulario(false);
+        setNuevoProducto({ nombre: '', codigo_barra: '', precio_compra: '', precio_venta: '', stock_actual: '', stock_minimo: '', categoria: '', fecha_vencimiento: '' });
+        setImagenPreview(null);
+        setImagenFile(null);
+        cargarProductos();
+      } else {
+        alert("Error al guardar el producto");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error de conexión con el servidor");
+    }
+  };
+
+  const eliminarProducto = async (id) => {
+    if (!window.confirm("¿Estás seguro de eliminar este producto?")) return;
+
+    try {
+      const res = await fetch(`${API_URL}/productos/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        alert("Producto eliminado correctamente");
+        cargarProductos();
+      } else {
+        alert("Error al eliminar el producto");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error de conexión");
     }
   };
 
@@ -38,67 +126,30 @@ function Inventario({ searchTerm = "" }) {
       setProductoAEditar(producto);
       setNuevoProducto({
         nombre: producto.nombre,
-        codigo_barra: producto.codigo_barra,
-        precio_compra: producto.precio_compra,
-        precio_venta: producto.precio_venta,
-        stock_actual: producto.stock_actual,
-        stock_minimo: producto.stock_minimo,
+        codigo_barra: producto.codigo_barra || '',
+        precio_compra: producto.precio_compra || '',
+        precio_venta: producto.precio_venta || '',
+        stock_actual: producto.stock_actual || '',
+        stock_minimo: producto.stock_minimo || '',
         categoria: producto.categoria || '',
-        fecha_vencimiento: producto.fecha_vencimiento || '',
-        imagen: null
+        fecha_vencimiento: producto.fecha_vencimiento || ''
       });
-      setImagenPreview(producto.imagenPreview || null);
+      setImagenPreview(producto.imagen_url || null);
+      setImagenFile(null);
     } else {
       setProductoAEditar(null);
-      setNuevoProducto({
-        nombre: '', codigo_barra: '', precio_compra: '', precio_venta: '',
-        stock_actual: '', stock_minimo: '', categoria: '', fecha_vencimiento: '', imagen: null
-      });
+      setNuevoProducto({ nombre: '', codigo_barra: '', precio_compra: '', precio_venta: '', stock_actual: '', stock_minimo: '', categoria: '', fecha_vencimiento: '' });
       setImagenPreview(null);
+      setImagenFile(null);
     }
     setMostrarFormulario(true);
-  };
-
-  const guardarProducto = () => {
-    if (!nuevoProducto.nombre || !nuevoProducto.precio_venta) {
-      alert("Nombre y Precio de Venta son obligatorios");
-      return;
-    }
-
-    const productoGuardado = {
-      id: productoAEditar ? productoAEditar.id : Date.now(),
-      ...nuevoProducto,
-      imagenPreview: imagenPreview,
-      precio_venta: parseFloat(nuevoProducto.precio_venta) || 0,
-      stock_actual: parseInt(nuevoProducto.stock_actual) || 0,
-      stock_minimo: parseInt(nuevoProducto.stock_minimo) || 10,
-    };
-
-    if (productoAEditar) {
-      setProductos(productos.map(p => p.id === productoAEditar.id ? productoGuardado : p));
-      alert("Producto actualizado correctamente");
-    } else {
-      setProductos([productoGuardado, ...productos]);
-      alert("Producto agregado correctamente");
-    }
-
-    setMostrarFormulario(false);
-  };
-
-  const eliminarProducto = (id) => {
-    if (window.confirm("¿Estás seguro de eliminar este producto?")) {
-      setProductos(productos.filter(p => p.id !== id));
-      alert("Producto eliminado correctamente");
-    }
   };
 
   return (
     <div className="inventario-container">
       <div className="inventario-header">
         <h2>Gestión de Inventario</h2>
-        <button className="btn-nuevo" onClick={() => abrirFormulario()}>
-          + Nuevo Producto
-        </button>
+        <button className="btn-nuevo" onClick={() => abrirFormulario()}>+ Nuevo Producto</button>
       </div>
 
       {mostrarFormulario && (
@@ -114,32 +165,32 @@ function Inventario({ searchTerm = "" }) {
 
             <div className="form-group">
               <label>Nombre del Producto *</label>
-              <input type="text" value={nuevoProducto.nombre} onChange={(e) => setNuevoProducto({...nuevoProducto, nombre: e.target.value})} placeholder="Ej: Paracetamol 500mg" />
+              <input type="text" value={nuevoProducto.nombre} onChange={e => setNuevoProducto({...nuevoProducto, nombre: e.target.value})} />
             </div>
 
             <div className="form-group">
               <label>Código de Barra</label>
-              <input type="text" value={nuevoProducto.codigo_barra} onChange={(e) => setNuevoProducto({...nuevoProducto, codigo_barra: e.target.value})} placeholder="1234567890123" />
+              <input type="text" value={nuevoProducto.codigo_barra} onChange={e => setNuevoProducto({...nuevoProducto, codigo_barra: e.target.value})} />
             </div>
 
             <div className="form-group">
               <label>Precio Compra (S/)</label>
-              <input type="number" value={nuevoProducto.precio_compra} onChange={(e) => setNuevoProducto({...nuevoProducto, precio_compra: e.target.value})} />
+              <input type="number" value={nuevoProducto.precio_compra} onChange={e => setNuevoProducto({...nuevoProducto, precio_compra: e.target.value})} />
             </div>
 
             <div className="form-group">
               <label>Precio Venta (S/) *</label>
-              <input type="number" value={nuevoProducto.precio_venta} onChange={(e) => setNuevoProducto({...nuevoProducto, precio_venta: e.target.value})} />
+              <input type="number" value={nuevoProducto.precio_venta} onChange={e => setNuevoProducto({...nuevoProducto, precio_venta: e.target.value})} />
             </div>
 
             <div className="form-group">
               <label>Stock Actual</label>
-              <input type="number" value={nuevoProducto.stock_actual} onChange={(e) => setNuevoProducto({...nuevoProducto, stock_actual: e.target.value})} />
+              <input type="number" value={nuevoProducto.stock_actual} onChange={e => setNuevoProducto({...nuevoProducto, stock_actual: e.target.value})} />
             </div>
 
             <div className="form-group">
               <label>Stock Mínimo</label>
-              <input type="number" value={nuevoProducto.stock_minimo} onChange={(e) => setNuevoProducto({...nuevoProducto, stock_minimo: e.target.value})} />
+              <input type="number" value={nuevoProducto.stock_minimo} onChange={e => setNuevoProducto({...nuevoProducto, stock_minimo: e.target.value})} />
             </div>
           </div>
 
@@ -176,13 +227,13 @@ function Inventario({ searchTerm = "" }) {
               {productosFiltrados.map(producto => (
                 <tr key={producto.id}>
                   <td>
-                    {producto.imagenPreview ? <img src={producto.imagenPreview} alt="" className="tabla-imagen" /> : "—"}
+                    {producto.imagen_url ? <img src={producto.imagen_url} alt="" className="tabla-imagen" /> : "—"}
                   </td>
                   <td><strong>{producto.nombre}</strong></td>
                   <td>{producto.codigo_barra || '—'}</td>
                   <td>S/ {producto.precio_venta}</td>
-                  <td className={producto.stock_actual <= producto.stock_minimo ? 'stock-bajo' : ''}>
-                    {producto.stock_actual} / {producto.stock_minimo}
+                  <td className={producto.stock_actual <= (producto.stock_minimo || 10) ? 'stock-bajo' : ''}>
+                    {producto.stock_actual} / {producto.stock_minimo || 10}
                   </td>
                   <td>
                     <button className="btn-editar" onClick={() => abrirFormulario(producto)}>Editar</button>
